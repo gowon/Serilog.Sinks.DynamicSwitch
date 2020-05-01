@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.DynamicSwitch", "src\Serilog.Sinks.DynamicSwitch\Serilog.Sinks.DynamicSwitch.csproj", "{0F95BA35-509E-445F-9CA4-7DB6B725448D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.DynamicSwitch.Tests", "test\Serilog.Sinks.DynamicSwitch.Tests\Serilog.Sinks.DynamicSwitch.Tests.csproj", "{00B29D5A-BB55-41CD-9EB2-C9ADB8E456C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B195E235-04FB-485A-B4B8-6D1E7A37547C}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F95BA35-509E-445F-9CA4-7DB6B725448D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F95BA35-509E-445F-9CA4-7DB6B725448D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F95BA35-509E-445F-9CA4-7DB6B725448D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F95BA35-509E-445F-9CA4-7DB6B725448D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00B29D5A-BB55-41CD-9EB2-C9ADB8E456C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00B29D5A-BB55-41CD-9EB2-C9ADB8E456C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00B29D5A-BB55-41CD-9EB2-C9ADB8E456C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00B29D5A-BB55-41CD-9EB2-C9ADB8E456C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DEDBDCE5-6158-4E68-A5FD-BD8D676CD959}
+	EndGlobalSection
+EndGlobal
