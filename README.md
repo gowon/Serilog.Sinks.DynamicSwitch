@@ -1,6 +1,6 @@
 # Serilog.Sinks.DynamicSwitch
 
-[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Serilog.Sinks.DynamicSwitchn?color=blue)](https://www.nuget.org/packages/Serilog.Sinks.DynamicSwitch)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Serilog.Sinks.DynamicSwitch?color=blue)](https://www.nuget.org/packages/Serilog.Sinks.DynamicSwitch)
 [![Nuget](https://img.shields.io/nuget/dt/Serilog.Sinks.DynamicSwitch?color=blue)](https://www.nuget.org/packages/Serilog.Sinks.DynamicSwitch)
 ![build](https://github.com/gowon/Serilog.Sinks.DynamicSwitch/workflows/build/badge.svg)
 [![codecov](https://codecov.io/gh/gowon/Serilog.Sinks.DynamicSwitch/branch/master/graph/badge.svg)](https://codecov.io/gh/gowon/Serilog.Sinks.DynamicSwitch)
