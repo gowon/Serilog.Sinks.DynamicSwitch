@@ -1,6 +1,5 @@
 ﻿namespace Serilog.Sinks.DynamicSwitch.Tests
 {
-    using Core;
     using Events;
     using Xunit;
     using Xunit.Categories;
@@ -14,10 +13,9 @@
         [Fact]
         public void ConstructDynamicSwitchSink()
         {
-            var sink = new DynamicSwitchSink(SwitchName, new LoggingLevelSwitch(LogLevel));
+            var sink = new DynamicSwitchSink(SwitchName);
 
             Assert.Equal(sink.Name, SwitchName);
-            Assert.Equal(sink.Switch.MinimumLevel, LogLevel);
         }
     }
 }

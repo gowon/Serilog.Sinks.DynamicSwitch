@@ -9,13 +9,10 @@
     // https://github.com/serilog/serilog-settings-configuration/blob/6a56899ff23251bb4d6cb54355e69e11e0226f30/test/TestDummies/DummyWithLevelSwitchSink.cs
     public class DynamicSwitchSink : ILogEventSink
     {
-        public DynamicSwitchSink(string name, LoggingLevelSwitch loggingSwitch)
+        public DynamicSwitchSink(string name)
         {
             Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentNullException(nameof(name));
-            Switch = loggingSwitch ?? throw new ArgumentNullException(nameof(loggingSwitch));
         }
-
-        public LoggingLevelSwitch Switch { get; }
 
         public string Name { get; }
 

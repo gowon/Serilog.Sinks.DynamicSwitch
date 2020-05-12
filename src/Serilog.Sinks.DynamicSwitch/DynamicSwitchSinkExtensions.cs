@@ -9,27 +9,29 @@
 
     public static class DynamicSwitchSinkExtensions
     {
-        // https://github.com/serilog/serilog-settings-configuration/blob/9f2fb303987d311a0bdaf7a91f25339a0c113f8f/test/TestDummies/DummyLoggerConfigurationExtensions.cs#L101
         public static LoggerConfiguration DynamicSwitch(
-            this LoggerSinkConfiguration loggerSinkConfiguration,
+            this LoggerSinkConfiguration configuration,
             string switchName,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch controlLevelSwitch = null)
+            LoggingLevelSwitch levelSwitch,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
         {
-            var sink = new DynamicSwitchSink(switchName, controlLevelSwitch);
+            configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            levelSwitch = levelSwitch ?? throw new ArgumentNullException(nameof(levelSwitch));
             var collection = LoggingLevelSwitchCollection.Current;
 
-            if (!collection.TryAdd(sink.Name, sink.Switch))
+            if (!collection.TryAdd(switchName, levelSwitch))
             {
-                throw new ArgumentException($"Key '{sink.Name}' already exists.");
+                throw new ArgumentException($"Key '{switchName}' already exists.");
             }
 
-            return loggerSinkConfiguration.Sink(sink, restrictedToMinimumLevel);
+            return configuration.Sink(new DynamicSwitchSink(switchName), restrictedToMinimumLevel, levelSwitch);
         }
 
-        public static IServiceCollection AddSerilogDynamicSwitch(this IServiceCollection services)
+        public static IServiceCollection AddLoggingLevelSwitchCollection(this IServiceCollection services,
+            LoggingLevelSwitchCollection collection = null)
         {
-            services.TryAddSingleton(LoggingLevelSwitchCollection.Current);
+            collection ??= LoggingLevelSwitchCollection.Current;
+            services.TryAddSingleton(collection);
             return services;
         }
     }
