@@ -7,7 +7,7 @@
 
 A Serilog sink that exposes a simple interface to retrieve and change LoggingLevelSwitches at runtime.
 
-## Using
+## Installing via NuGet
 
 To get started install the *Serilog.Sinks.DynamicSwitch* package:
 
@@ -18,10 +18,14 @@ PM> Install-Package Serilog.Sinks.DynamicSwitch
 or
 
 ```bash
-$ dotnet add package Serilog.Sinks.DynamicSwitch
+dotnet add package Serilog.Sinks.DynamicSwitch
 ```
 
-To start using the DynamicSwitch, the sink can be setup as follows:
+## Using
+
+### Setup sinks
+
+A DynamicSwitch sink can be set up in the standard way while constructing a `LoggerConfiguration`. A specific `LoggingLevelSwitchCollection` object can be passed to the configuration; if one is not specified, a static global collection is used that be referenced using `LoggingLevelSwitchCollection.Current`. Each DynamicSwitch must be uniquely named. The following is a simple example:
 
 ```csharp
 var logLevel = new LoggingLevelSwitch(LogEventLevel.Warning);
@@ -32,7 +36,7 @@ var log = new LoggerConfiguration()
     .CreateLogger();
 ```
 
-If using `appsettings.json` for configuration, the following example shows how to configure DynamicSwitch sinks:
+If using `appsettings.json` for configuration, the following example shows how to configure DynamicSwitch sinks along with attached level switches:
 
 ```javascript
 {
@@ -82,7 +86,9 @@ If using `appsettings.json` for configuration, the following example shows how t
 }
 ```
 
-Next, add the level switch collection to your services collection:
+#### Using Dependency Injection
+
+To support the retrieval of switches through dependency injection, there is a simple extention method to add the collection to the services container. If a collection is not passed, the global `LoggingLevelSwitchCollection.Current` will be added to the container:
 
 ```csharp
 .ConfigureServices((hostContext, services) =>

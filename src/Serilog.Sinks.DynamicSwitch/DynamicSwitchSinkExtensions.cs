@@ -15,9 +15,19 @@
             LoggingLevelSwitch levelSwitch,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
         {
+            return DynamicSwitch(configuration, null, switchName, levelSwitch, restrictedToMinimumLevel);
+        }
+
+        public static LoggerConfiguration DynamicSwitch(
+            this LoggerSinkConfiguration configuration,
+            LoggingLevelSwitchCollection collection,
+            string switchName,
+            LoggingLevelSwitch levelSwitch,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+        {
             configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             levelSwitch = levelSwitch ?? throw new ArgumentNullException(nameof(levelSwitch));
-            var collection = LoggingLevelSwitchCollection.Current;
+            collection ??= LoggingLevelSwitchCollection.Current;
 
             if (!collection.TryAdd(switchName, levelSwitch))
             {
