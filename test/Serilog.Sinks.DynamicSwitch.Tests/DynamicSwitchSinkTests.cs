@@ -17,7 +17,7 @@
         {
             const string switchName1 = "switch1";
             const string switchName2 = "switch2";
-            var collection = new LoggingLevelSwitchCollection();
+            var collection = new DynamicSwitchCollection();
             var logSwitch = new LoggingLevelSwitch(LogEventLevel.Error);
             var logSwitch2 = new LoggingLevelSwitch(LogEventLevel.Debug);
 
@@ -36,7 +36,7 @@
         public void AddMultipleDynamicSwitches_ThrowOnDuplicateNameKey()
         {
             const string switchName = "switch";
-            var collection = new LoggingLevelSwitchCollection();
+            var collection = new DynamicSwitchCollection();
             var logSwitch = new LoggingLevelSwitch(LogEventLevel.Error);
             var logSwitch2 = new LoggingLevelSwitch(LogEventLevel.Debug);
 
@@ -51,33 +51,22 @@
 
         [UnitTest]
         [Fact]
-        public void ConstructDynamicSwitchSink()
+        public void AddMultipleDynamicSwitches2()
         {
-            const string switchName = "switch";
-            var sink = new DynamicSwitchSink(switchName);
-            Assert.Equal(sink.Name, switchName);
-        }
-
-        [UnitTest]
-        [Fact]
-        public void UseSingletonCollectionDependencyInjection()
-        {
-            const string switchName = "switch";
-            var logSwitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+            const string switchName1 = "switch1";
+            const string switchName2 = "switch2";
+            var collection = new DynamicSwitchCollection();
+            var logSwitch = new LoggingLevelSwitch(LogEventLevel.Error);
+            var logSwitch2 = new LoggingLevelSwitch(LogEventLevel.Debug);
 
             var log = new LoggerConfiguration()
-                .WriteTo.DynamicSwitch(switchName, logSwitch)
+                .WriteTo.DynamicSwitch(collection, switchName1, logSwitch)
+                .WriteTo.DynamicSwitch(collection, switchName2, logSwitch2)
                 .CreateLogger();
 
-            var provider = new ServiceCollection()
-                .AddLoggingLevelSwitchCollection()
-                .BuildServiceProvider();
-
-            var collection = provider.GetRequiredService<LoggingLevelSwitchCollection>();
-
-            Assert.Equal(LoggingLevelSwitchCollection.Current, collection);
-            Assert.Single(collection);
-            Assert.Equal(LogEventLevel.Verbose, collection[switchName].MinimumLevel);
+            Assert.Equal(2, collection.Count);
+            Assert.Equal(LogEventLevel.Error, collection[switchName1].MinimumLevel);
+            Assert.Equal(LogEventLevel.Debug, collection[switchName2].MinimumLevel);
         }
 
         [UnitTest]
@@ -85,7 +74,7 @@
         public void UpdateSwitchFromCollection_ChangeEmitBehavior()
         {
             const string switchName = "switch";
-            var collection = new LoggingLevelSwitchCollection();
+            var collection = new DynamicSwitchCollection();
             var logSwitch = new LoggingLevelSwitch(LogEventLevel.Error);
             var a = LogEvent(LogEventLevel.Error, null, "Hello, {Name}!", "Alice");
             var b = LogEvent(LogEventLevel.Information, null, "Hello, {Name}!", "Bob");
@@ -106,6 +95,28 @@
 
             log.Write(c);
             Assert.Equal(2, DummyWithLevelSwitchSink.Emitted.Count);
+        }
+
+        [UnitTest]
+        [Fact]
+        public void UseSingletonCollectionDependencyInjection()
+        {
+            const string switchName = "switch";
+            var logSwitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+
+            var log = new LoggerConfiguration()
+                .WriteTo.DynamicSwitch(switchName, logSwitch)
+                .CreateLogger();
+
+            var provider = new ServiceCollection()
+                .AddDynamicSwitches()
+                .BuildServiceProvider();
+
+            var collection = provider.GetRequiredService<DynamicSwitchCollection>();
+
+            Assert.Equal(DynamicSwitchCollection.Current, collection);
+            Assert.Single(collection);
+            Assert.Equal(LogEventLevel.Verbose, collection[switchName].MinimumLevel);
         }
     }
 }

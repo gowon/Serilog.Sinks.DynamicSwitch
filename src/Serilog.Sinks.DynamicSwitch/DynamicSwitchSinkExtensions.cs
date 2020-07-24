@@ -3,7 +3,6 @@
     using System;
     using Configuration;
     using Core;
-    using Events;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -12,35 +11,37 @@
         public static LoggerConfiguration DynamicSwitch(
             this LoggerSinkConfiguration configuration,
             string switchName,
-            LoggingLevelSwitch levelSwitch,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+            LoggingLevelSwitch levelSwitch)
         {
-            return DynamicSwitch(configuration, null, switchName, levelSwitch, restrictedToMinimumLevel);
+            return DynamicSwitch(configuration, null, switchName, levelSwitch);
         }
 
         public static LoggerConfiguration DynamicSwitch(
             this LoggerSinkConfiguration configuration,
-            LoggingLevelSwitchCollection collection,
+            DynamicSwitchCollection collection,
             string switchName,
-            LoggingLevelSwitch levelSwitch,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+            LoggingLevelSwitch levelSwitch)
         {
             configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            switchName = !string.IsNullOrWhiteSpace(switchName)
+                ? switchName
+                : throw new ArgumentNullException(nameof(switchName));
+
             levelSwitch = levelSwitch ?? throw new ArgumentNullException(nameof(levelSwitch));
-            collection ??= LoggingLevelSwitchCollection.Current;
+            collection ??= DynamicSwitchCollection.Current;
 
             if (!collection.TryAdd(switchName, levelSwitch))
             {
                 throw new ArgumentException($"Key '{switchName}' already exists.");
             }
 
-            return configuration.Sink(new DynamicSwitchSink(switchName), restrictedToMinimumLevel, levelSwitch);
+            return configuration.Logger(_ => { });
         }
 
-        public static IServiceCollection AddLoggingLevelSwitchCollection(this IServiceCollection services,
-            LoggingLevelSwitchCollection collection = null)
+        public static IServiceCollection AddDynamicSwitches(this IServiceCollection services,
+            DynamicSwitchCollection collection = null)
         {
-            collection ??= LoggingLevelSwitchCollection.Current;
+            collection ??= DynamicSwitchCollection.Current;
             services.TryAddSingleton(collection);
             return services;
         }
